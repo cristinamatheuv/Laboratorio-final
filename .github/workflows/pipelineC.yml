@@ -2,7 +2,7 @@ name: WorkFlow
 on:
   push:
     branches:
-      - feat-devpsecops
+      - feat-devsecops
 
 jobs:
   Build:
