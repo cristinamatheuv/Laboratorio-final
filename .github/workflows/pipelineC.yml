@@ -6,7 +6,7 @@ on:
       - feat-devsecops
 
 jobs:
-  Build:
+  SAST:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -18,5 +18,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Log
-        run: ls -R
+      - name: Build
+        run: |
+          chmod 777 gradlew
+          ./gradlew build
