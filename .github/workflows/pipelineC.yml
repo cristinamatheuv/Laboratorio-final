@@ -1,0 +1,13 @@
+name: WorkFlow
+on:
+  push:
+    branches:
+      - feat-depsecosCM*
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hola Mundo
+        run: |
+          echo "Hola Mundo"
