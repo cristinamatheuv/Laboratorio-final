@@ -30,7 +30,7 @@ jobs:
             -d 'organization=devsecops7' \
             -d 'visibility=public'
           if [ $? -ne 0 ]; then
-            echo "Proyecto ya existe en SonarCloud"
+            echo "No se puede crear el proyecto en SonarCloud"
           else
             echo "El Proyecto ${{ github.event.repository.name }} fue creado exitosamente en SonarCloud"
             echo "Estableciendo la rama main como rama por defecto"
