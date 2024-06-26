@@ -40,7 +40,7 @@ jobs:
             echo "Project ${GITHUB_REPOSITORY} created successfully on SonarCloud"
             
             echo "Setting 'main' as the default branch"
-            curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/branches/rename' \
+            curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/project_branches/rename' \
               -d "name=main" \
               -d "projects=${{ github.event.repository.name }}"
           fi
