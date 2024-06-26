@@ -34,5 +34,5 @@ jobs:
             echo "Estableciendo la rama main como rama por defecto"
             curl -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/project_branches/rename' \
               -d 'name=main' \
-              -d 'projects=${{ github.event.repository.name }}'
+              -d 'project=${{ github.event.repository.name }}'
           fi
