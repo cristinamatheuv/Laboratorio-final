@@ -34,7 +34,7 @@ jobs:
             curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
               -d "name=${{ github.event.repository.name }}" \
               -d "projects=${{ github.event.repository.name }}" \
-              -d "organizations=devseco" \
+              -d "organization=devseco" \
               -d "visibility=public"
             
             echo "Project ${GITHUB_REPOSITORY} created successfully on SonarCloud"
