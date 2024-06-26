@@ -1,4 +1,4 @@
-name: SonarCloud Integration
+name: Workflow
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - feat-devsecops
 
 jobs:
-  analyze:
+  SAST:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 17
@@ -18,44 +18,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Validate project existence on SonarCloud
+      - name: Validating project existence on SonarCloud
         id: ValidateProjectSonar
-        env:
-          SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
+        env: SONAR_TOKEN:${{ secrets.SONAR_TOKEN}}
         run: |
           set +e
+          curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
+            -d "name=${{ github.event.repository.name }}" \
+            -d "projects=${{ github.event.repository.name }}" \
+            -d "organizations=devseco" \
+            -d "visibility=public"
 
-          # Verificar si el proyecto ya existe en SonarCloud
-          response=$(curl -s -f -X GET -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/search?organization=devseco&projects=Laboratorio-final')
-
-          if echo "$response" | grep -q '"name":"Laboratorio-final"'; then
-            echo "Project cristinamatheuv/Laboratorio-final already exists on SonarCloud"
+          if [ $? -ne 0 ]; then
+            echo "Project already exists on SonarCloud"
           else
-            echo "Project cristinamatheuv/Laboratorio-final does not exist on SonarCloud, creating..."
-
-            # Crear el proyecto en SonarCloud
-            create_project_response=$(curl -s -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
-              -d "name=Laboratorio-final" \
-              -d "organization=devseco" \
-              -d "visibility=public")
-
-            if echo "$create_project_response" | grep -q '"errors"'; then
-              echo "Failed to create project on SonarCloud"
-              exit 1
-            fi
-
-            echo "Project cristinamatheuv/Laboratorio-final created successfully on SonarCloud"
+            echo "Project ${{ github.event.repository.name }} created successfully on SonarCloud"
+            
+            echo "Setting 'main' as the default branch"
+            curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/project_branches/rename' \
+              -d "name=main" \
+              -d "projects=${{ github.event.repository.name }}"
           fi
-
-          # Renombrar la rama principal del proyecto si se creó correctamente
-          echo "Setting 'main' as the default branch"
-          rename_branch_response=$(curl -s -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/project_branches/rename' \
-            -d "name=main" \
-            -d "project=Laboratorio-final")
-
-          if echo "$rename_branch_response" | grep -q '"errors"'; then
-            echo "Failed to rename main branch on SonarCloud"
-            exit 1
-          fi
-
-          echo "Main branch renamed successfully on SonarCloud"
