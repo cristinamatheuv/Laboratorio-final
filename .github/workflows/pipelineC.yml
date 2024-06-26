@@ -59,8 +59,3 @@ jobs:
           fi
 
           echo "Main branch renamed successfully on SonarCloud"
-
-      - name: SonarCloud Scan
-        env:
-          SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
-        run: sonar-scanner
