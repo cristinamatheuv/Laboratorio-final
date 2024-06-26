@@ -21,19 +21,23 @@ jobs:
       - name: Validating project existence on SonarCloud
         id: ValidateProjectSonar
         env:
-          SONAR_TOKEN: "${{ secrets.SONAR_TOKEN}}"
+          SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
         run: |
           set +e
-          curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
-            -d "name=${{ github.event.repository.name }}" \
-            -d "projects=${{ github.event.repository.name }}" \
-            -d "organizations=devseco" \
-            -d "visibility=public"
+          curl -f -X GET -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/search?organization=devseco&projects=${{ github.event.repository.name }}' \
+            | grep -q '"name":"${{ github.event.repository.name }}"'
 
-          if [ $? -ne 0 ]; then
-            echo "Project already exists on SonarCloud"
+          if [ $? -eq 0 ]; then
+            echo "Project ${GITHUB_REPOSITORY} already exists on SonarCloud"
           else
-            echo "Project ${{ github.event.repository.name }} created successfully on SonarCloud"
+            echo "Project ${GITHUB_REPOSITORY} does not exist on SonarCloud, creating..."
+            curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
+              -d "name=${{ github.event.repository.name }}" \
+              -d "projects=${{ github.event.repository.name }}" \
+              -d "organizations=devseco" \
+              -d "visibility=public"
+            
+            echo "Project ${GITHUB_REPOSITORY} created successfully on SonarCloud"
             
             echo "Setting 'main' as the default branch"
             curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/branches/rename' \
