@@ -24,23 +24,30 @@ jobs:
           SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
         run: |
           set +e
-          curl -f -X GET -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/search?organization=devseco&projects=${{ github.event.repository.name }}' \
-            | grep -q '"name":"${{ github.event.repository.name }}"'
+
+          # Verificar si el proyecto ya existe en SonarCloud
+          curl -f -X GET -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/search?organization=devseco&projects=Laboratorio-final' \
+            | grep -q '"name":"Laboratorio-final"'
 
           if [ $? -eq 0 ]; then
-            echo "Project ${GITHUB_REPOSITORY} already exists on SonarCloud"
+            echo "Project cristinamatheuv/Laboratorio-final already exists on SonarCloud"
           else
-            echo "Project ${GITHUB_REPOSITORY} does not exist on SonarCloud, creating..."
+            echo "Project cristinamatheuv/Laboratorio-final does not exist on SonarCloud, creating..."
+
+            # Crear el proyecto en SonarCloud
             curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
-              -d "name=${{ github.event.repository.name }}" \
-              -d "projects=${{ github.event.repository.name }}" \
+              -d "name=Laboratorio-final" \
+              -d "projects=Laboratorio-final" \
               -d "organization=devseco" \
               -d "visibility=public"
-            
-            echo "Project ${GITHUB_REPOSITORY} created successfully on SonarCloud"
-            
+
+            echo "Project cristinamatheuv/Laboratorio-final created successfully on SonarCloud"
+          fi
+
+          # Renombrar la rama principal del proyecto si se creó
+          if [ $? -eq 0 ]; then
             echo "Setting 'main' as the default branch"
             curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/project_branches/rename' \
               -d "name=main" \
-              -d "projects=${{ github.event.repository.name }}"
+              -d "project=Laboratorio-final"
           fi
