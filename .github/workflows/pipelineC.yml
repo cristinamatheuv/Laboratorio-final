@@ -18,7 +18,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run a script with a secret
-        env:
-          SONAR_TOKEN: "${{ secrets.SONAR_TOKEN }}"
-        run: echo "The secret is $SONAR_TOKEN"
+      - name: Validating project existence on SonarCloud
+        id: ValidateProjectSonar
+        run: |
+          set +e
+          curl -f -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/create' \
+            -d "name=${{ github.event.repository.name }}" \
+            -d "projects=${{ github.event.repository.name }}" \
+            -d "organizations=devseco" \
+            -d "visibility=public"
+
+          if [ $? -ne 0 ]; then
+            echo "Project already exists on SonarCloud"
+          else
+            echo "Project ${{ github.event.repository.name }} created successfully on SonarCloud"
+            
+            echo "Setting 'main' as the default branch"
+            curl -X POST -u "${{ secrets.SONAR_TOKEN }}:" 'https://sonarcloud.io/api/projects/branches/rename' \
+              -d "name=main" \
+              -d "projects=${{ github.event.repository.name }}"
+          fi
