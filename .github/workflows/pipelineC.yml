@@ -47,3 +47,17 @@ jobs:
       #       -Dsonar.projectKey= ${{ github.event.repository.name }} \
       #       -Dsonar.host.url=https://sonarcloud.io \
       #       -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+  #------------SCA-----------------
+
+  SCA:
+    needs: SAST
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: build
+        run: |
+          chmod 777 package.json
+          ./package.json
