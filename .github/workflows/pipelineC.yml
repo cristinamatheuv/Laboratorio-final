@@ -57,6 +57,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Verify package.json existence
+        run: |
+          if [ ! -f package.json ]; then
+            echo "Error: package.json not found!"
+            exit 1
+          fi
+
       - name: Dependency Check
         uses: dependency-check/Dependency-Check_Action@1.1.0
         env:
@@ -71,14 +78,11 @@ jobs:
             --failOnCVSS 7
             --enableRetired
 
-      - name: List report directory for debugging
-        run: ls -R /home/runner/work/Laboratorio-final/Laboratorio-final/report
-
       - name: Upload Test Result
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@master
         with:
           name: Depcheck Report
-          path: /home/runner/work/Laboratorio-final/Laboratorio-final/report
+          path: ${{github.workspace}}/report
           if-no-files-found: warn
           compression-level: 6
           overwrite: false
