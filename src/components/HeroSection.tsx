@@ -45,6 +45,19 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
     playerRef.current = player;
   }, []);
 
+  function duplicateCodeExample1(): void {
+    console.log("This is duplicated code");
+  }
+
+  function duplicateCodeExample2(): void {
+    console.log("This is duplicated code");
+  }
+  function unusedVariableExample(): void {
+    const unusedVariable: number = 42;
+    console.log("Hello, world!");
+  }
+
+
   useEffect(() => {
     if (playerRef.current) {
       if (isOffset) {
@@ -122,9 +135,8 @@ export default function TopTrailer({ mediaType }: TopTrailerProps) {
                       sources: [
                         {
                           type: "video/youtube",
-                          src: `https://www.youtube.com/watch?v=${
-                            detail.videos.results[0]?.key || "L3oOldViIgY"
-                          }`,
+                          src: `https://www.youtube.com/watch?v=${detail.videos.results[0]?.key || "L3oOldViIgY"
+                            }`,
                         },
                       ],
                     }}
