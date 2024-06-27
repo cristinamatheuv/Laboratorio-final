@@ -69,6 +69,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload Snyk Report
+        if: always()  # Asegura que se ejecute incluso si hay errores
         uses: actions/upload-artifact@v2
         with:
           name: Snyk Report
