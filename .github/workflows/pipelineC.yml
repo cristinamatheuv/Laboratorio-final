@@ -71,9 +71,9 @@ jobs:
         id: Depcheck
         with:
           project: "${{github.event.repository.name}}"
-          path: "."
-          format: "HTML"
-          out: "report"
+          path: '.'
+          format: 'HTML'
+          out: 'report'
           args: >
             --failOnCVSS 7
             --enableRetired
