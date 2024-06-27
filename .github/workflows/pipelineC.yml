@@ -57,7 +57,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Verify package.json existence
+      - name: Verificar package.json existe
         run: |
           if [ ! -f package.json ]; then
             echo "Error: package.json not found!"
@@ -79,7 +79,7 @@ jobs:
             --enableRetired
 
       - name: Upload Test Result
-        uses: actions/upload-artifacts@master
+        uses: actions/upload-artifact@master
         with:
           name: Depcheck report
           path: ${{github.workspace}}/report
