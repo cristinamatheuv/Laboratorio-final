@@ -23,7 +23,7 @@ jobs:
             -Dsonar.projectKey=devsecops7_laboratorio-final
             -Dsonar.organization=devsecops7
             -Dsonar.host.url=https://sonarcloud.io
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }} 
             -Dsonar.branch.name=
 
      
