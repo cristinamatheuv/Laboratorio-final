@@ -18,6 +18,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.projectKey=devsecops7_laboratorio-final
+            -Dsonar.organization=devsecops7
+            -Dsonar.host.url=https://sonarcloud.io
 
      
 
