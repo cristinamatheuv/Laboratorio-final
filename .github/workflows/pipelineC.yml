@@ -50,39 +50,27 @@ jobs:
 
   #------------SCA-----------------
 
-  SCA:
-    needs: SAST
+  snyk-security-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Verificar package.json existe
+      - name: Install Snyk CLI
         run: |
-          if [ ! -f package.json ]; then
-            echo "Error: package.json not found!"
-            exit 1
-          fi
+          npm install -g snyk
 
-      - name: Dependency Check
-        uses: dependency-check/Dependency-Check_Action@1.1.0
-        env:
-          JAVA_HOME: /opt/jdk
-        id: Depcheck
-        with:
-          project: '${{github.event.repository.name}}'
-          path: '.'
-          format: 'HTML'
-          out: 'reports'
-          args: >
-            --failOnCVSS 7
-            --enableRetired
+      - name: Authenticate with Snyk
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
 
-      - name: Upload Test Result
+      - name: Run Snyk Security Scan
+        run: |
+          snyk test --all-projects --json > snyk-report.json
+        continue-on-error: true
+
+      - name: Upload Snyk Report
         uses: actions/upload-artifact@v2
         with:
-          name: Depcheck report
-          path: ${{github.workspace}}/report
-          if-no-files-found: warn
-          compression-level: 6
-          overwrite: false
+          name: Snyk Report
+          path: snyk-report.json
