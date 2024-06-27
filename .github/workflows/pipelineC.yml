@@ -65,12 +65,11 @@ jobs:
 
       - name: Run Snyk Security Scan
         run: |
-          snyk test --all-projects --json > snyk-report.json || true
+          snyk test --all-projects --json > ${{ github.workspace }}/snyk-report.json || echo "Snyk test failed"
         continue-on-error: true
 
       - name: Upload Snyk Report
-        if: always()  # Asegura que se ejecute incluso si hay errores
         uses: actions/upload-artifact@v2
         with:
           name: Snyk Report
-          path: snyk-report.json
+          path: ${{ github.workspace }}/snyk-report.json
