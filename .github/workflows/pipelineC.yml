@@ -70,7 +70,7 @@ jobs:
           JAVA_HOME: /opt/jdk
         id: Depcheck
         with:
-          project: "${{github.event.repository.name}}"
+          project: '${{github.event.repository.name}}'
           path: '.'
           format: 'HTML'
           out: 'report'
@@ -79,9 +79,9 @@ jobs:
             --enableRetired
 
       - name: Upload Test Result
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifacts@master
         with:
-          name: Depcheck Report
+          name: Depcheck report
           path: ${{github.workspace}}/report
           if-no-files-found: warn
           compression-level: 6
