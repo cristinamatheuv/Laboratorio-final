@@ -71,11 +71,14 @@ jobs:
             --failOnCVSS 7
             --enableRetired
 
+      - name: List report directory for debugging
+        run: ls -R /home/runner/work/Laboratorio-final/Laboratorio-final/report
+
       - name: Upload Test Result
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v2
         with:
           name: Depcheck Report
-          path: ${{github.workspace}}/report
+          path: /home/runner/work/Laboratorio-final/Laboratorio-final/report
           if-no-files-found: warn
           compression-level: 6
           overwrite: false
