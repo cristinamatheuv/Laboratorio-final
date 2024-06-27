@@ -6,7 +6,22 @@ interface MotionContainerProps extends BoxProps {
   initial?: boolean | string;
   open?: boolean;
 }
-
+interface MotionContainerProps extends BoxProps {
+  initial?: boolean | string;
+  open?: boolean;
+}
+interface MotionContainerProps extends BoxProps {
+  initial?: boolean | string;
+  open?: boolean;
+}
+interface MotionContainerProps extends BoxProps {
+  initial?: boolean | string;
+  open?: boolean;
+}
+interface MotionContainerProps extends BoxProps {
+  initial?: boolean | string;
+  open?: boolean;
+}
 export default function MotionContainer({
   open,
   children,
