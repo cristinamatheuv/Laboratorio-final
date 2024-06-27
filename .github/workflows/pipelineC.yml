@@ -76,3 +76,6 @@ jobs:
         with:
           name: Depcheck Report
           path: ${{github.workspace}}/report
+          if-no-files-found: warn
+          compression-level: 6
+          overwrite: false
