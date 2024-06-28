@@ -17,7 +17,7 @@ jobs:
         id: validateProjectOnSonar
         run: |
             #pwd
-            #ls -R
+            ls -R
             set +e
             curl -f -X POST -u '${{ secrets.SONAR_TOKEN }}:' 'https://sonarcloud.io/api/projects/create' -d 'name=${{ github.event.repository.name }}' -d 'project=${{ github.event.repository.name }}' -d 'organization=curso-devsecops-usach-test' -d 'visibility=public'
             if [ $? -ne 0 ]; then
@@ -86,3 +86,11 @@ jobs:
     
       - name: Checkout code
         uses: actions/checkout@v2
+      
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
+        with: 
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      
+      
