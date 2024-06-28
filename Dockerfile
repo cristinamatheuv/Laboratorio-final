@@ -15,3 +15,13 @@ RUN rm -rf ./*
 COPY --from=builder /app/dist .
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+FROM openjdk:11-jre
+
+EXPOSE  8085
+
+ADD Laboratorio-final-2.6.0.jar /app/Laboratorio-final-2.6.0.jar
+
+WORKDIR /app
+
+CMD java -jar Laboratorio-final-2.6.0.jar

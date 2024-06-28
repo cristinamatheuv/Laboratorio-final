@@ -74,6 +74,14 @@ jobs:
       with:
         name: Depcheck report
         path: ${{github.workspace}}/reports
+    
+   
+   
+    - name: Upload JAR
+      uses: actions/upload-artifact@master
+      with:
+          name: JAR
+          path: ${{github.workspace}}/builds/libs/Laboratorio-final-2.6.0.jar   
 
 
 
@@ -92,5 +100,18 @@ jobs:
         with: 
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Download Jar
+        uses: actions/download-artifac@master
+        with: 
+          name: JAR
+          path: ${{github.workspace}}
+      
+      
+      
+      - name: Build Docker
+        run: |
+          docker build --tag cristinamatheuv/devsecops:latest .
+        
       
       
