@@ -78,11 +78,11 @@ jobs:
     
    
    
-    # - name: Upload JAR
-    #   uses: actions/upload-artifact@master
-    #   with:
-    #       name: JAR
-    #       path: ${{github.workspace}}/builds/libs/Laboratorio-final-2.6.0.jar   
+    - name: Upload JAR
+      uses: actions/upload-artifact@master
+      with:
+          name: JAR
+          path: ${{github.workspace}}/builds/libs/Laboratorio-final-2.6.0.jar   
 
 
 
