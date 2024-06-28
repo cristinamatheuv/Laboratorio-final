@@ -9,10 +9,11 @@ jobs:
   SAST:
     name: SAST
     runs-on: ubuntu-latest
-    steps:
+    steps:  
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: Validando existencia de proyecto en SonarCloud
         id: validateProjectOnSonar
         run: |
@@ -77,35 +78,35 @@ jobs:
     
    
    
-    - name: Upload JAR
-      uses: actions/upload-artifact@master
-      with:
-          name: JAR
-          path: ${{github.workspace}}/builds/libs/Laboratorio-final-2.6.0.jar   
+    # - name: Upload JAR
+    #   uses: actions/upload-artifact@master
+    #   with:
+    #       name: JAR
+    #       path: ${{github.workspace}}/builds/libs/Laboratorio-final-2.6.0.jar   
 
 
 
 
  #---------------DOCKER
   DockerBuild:
-    needs: SCA
     runs-on: self-hosted
     steps: 
-    
       - name: Checkout code
         uses: actions/checkout@v2
-      
+
       - name: Docker Login
-        uses: docker/login-action@v3.0.0
+        uses: docker/login-action@v2
         with: 
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Download Jar
-        uses: actions/download-artifac@master
-        with: 
-          name: JAR
-          path: ${{github.workspace}}
+      - name: Build Docker
+        run: |
+          docker build --tag cristinamatheuv/devsecops:latest .
+      
+      - name: Push Docker Image
+        run: |
+          docker push cristinamatheuv/devsecops:latest
       
       
       
