@@ -146,7 +146,7 @@ jobs:
     needs: DockerScan
     runs-on: self-hosted
     steps: 
-        - name: Clonacionn de codigo
+        - name: Clonacion de codigo
           uses: actions/checkout@v4
         - name: Despliegue
           run: |
