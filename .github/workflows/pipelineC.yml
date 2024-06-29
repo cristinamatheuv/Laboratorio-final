@@ -53,7 +53,7 @@ jobs:
   #------------SCA-----------------
 
   SCA:
-      #needs: SAST
+      needs: SAST
       runs-on: ubuntu-latest
       steps:
       - name: Set up Node.js 20
@@ -69,7 +69,14 @@ jobs:
         with:
 
           args: --all-projects --severity-threshold=high --json
- #---------------DOCKER
+
+
+
+
+
+
+ #---------------DOCKER IMAGE-----------------------------
+
   DockerBuild:
     needs: SCA
     runs-on: ubuntu-latest
@@ -114,7 +121,7 @@ jobs:
 
     - name: Pull de la Imagen Docker
       run: | 
-        docker pull dusankm/netflix-app:latest
+        docker pull cristinamatheuv/devsecops:latest
 
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
