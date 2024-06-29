@@ -143,8 +143,8 @@ jobs:
     #-------------------- Deploy  ------------------------------------------
 
   Deploy:
-    needs: DockerScan
-    runs-on: self-hosted
+    #needs: DockerScan
+    runs-on: ubuntu-latest
     steps: 
         - name: Clonacion de codigo
           uses: actions/checkout@v4
