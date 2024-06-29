@@ -53,32 +53,22 @@ jobs:
   #------------SCA-----------------
 
   SCA:
-      needs: SAST
+      #needs: SAST
       runs-on: ubuntu-latest
       steps:
-      
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
       - name: Checkout code
-        uses: actions/checkout@v2      
-  
-      - name: Dependency Check
-        uses: dependency-check/Dependency-Check_Action@1.1.0
+        uses: actions/checkout@v2
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
         env:
-          JAVA_HOME: /opt/jdk
-        id: Depcheck
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          project: '${{ github.event.repository.name }}'
-          path: '.'
-          format: 'HTML'
-          out: 'reports'
-          args: >
-            --failOnCVSS 7
-            --enableRetired
-  
-      - name: Upload Test result
-        uses: actions/upload-artifact@master
-        with:
-          name: Depcheck report
-          path: ${{github.workspace}}/reports
+
+          args: --all-projects --severity-threshold=medium --json
  #---------------DOCKER
   DockerBuild:
     needs: SCA
