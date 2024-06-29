@@ -165,7 +165,7 @@ jobs:
   
     - name: Start Application
       run: |
-          docker run -d --name netflix-app -p 8080:80 cristinamatheuv/devsecops:latest
+          kubectl apply -f ./Kubernetes/deployment.yml 
           sleep 15 # Give the application some time to start
   
     - name: ZAP Scan
