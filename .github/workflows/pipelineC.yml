@@ -143,7 +143,7 @@ jobs:
     #-------------------- Deploy  ------------------------------------------
 
   Deploy:
-    needs: DockerScan
+    ##needs: DockerScan
     runs-on: self-hosted
     steps: 
         - name: Clonacionn de codigo
@@ -157,7 +157,7 @@ jobs:
 
   #----------------DAST--------------
   DAST:
-     # needs: Deploy
+      needs:  DockerScan
       runs-on: self-hosted
       steps:
 
