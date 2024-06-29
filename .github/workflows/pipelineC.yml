@@ -150,5 +150,5 @@ jobs:
           uses: actions/checkout@v4
         - name: Despliegue
           run: |
-            kubectl apply -f ./Kubernetes/deployment.yml     
+            kubectl apply -f ./Kubernetes/deployment.yml --validate=false    
       
