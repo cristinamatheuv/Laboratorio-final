@@ -1,27 +1,28 @@
-FROM node:16.17.0-alpine as builder
+# Etapa de construcción
+FROM node:14 AS build
+
 WORKDIR /app
-COPY ./package.json .
-COPY ./yarn.lock .
-RUN yarn install
+
+# Copiar los archivos del proyecto
+COPY package*.json ./
+
+# Instalar dependencias
+RUN npm install
+
+# Copiar el resto de los archivos del proyecto
 COPY . .
-ARG TMDB_V3_API_KEY
-ENV VITE_APP_TMDB_V3_API_KEY=${TMDB_V3_API_KEY}
-ENV VITE_APP_API_ENDPOINT_URL="https://api.themoviedb.org/3"
-RUN yarn build
 
-FROM nginx:stable-alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=builder /app/dist .
+# Construir la aplicación
+RUN npm run build
+
+# Etapa de producción
+FROM nginx:alpine
+
+# Copiar los archivos de construcción de la etapa anterior
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Exponer el puerto
 EXPOSE 80
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
 
-FROM openjdk:11-jre
-
-EXPOSE  8085
-
-ADD Laboratorio-final-2.6.0.jar /app/Laboratorio-final-2.6.0.jar
-
-WORKDIR /app
-
-CMD java -jar Laboratorio-final-2.6.0.jar
+# Comando para ejecutar Nginx
+CMD ["nginx", "-g", "daemon off;"]
