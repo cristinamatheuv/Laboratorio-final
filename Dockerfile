@@ -12,8 +12,7 @@ RUN npm install
 # Copiar el resto de los archivos del proyecto
 COPY . .
 
-# Construir la aplicación
-RUN npm run build
+
 
 # Etapa de producción
 FROM nginx:alpine
