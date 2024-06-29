@@ -163,10 +163,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
   
-    # - name: Start Application
-    #   run: |
-    #       docker run -d --name netflix-app -p 8080:80 cristinamatheuv/devsecops:latest
-    #       sleep 15 # Give the application some time to start
+    - name: Start Application
+      run: |
+          docker run -d --name netflix-app -p 8080:80 cristinamatheuv/devsecops:latest
+          sleep 15 # Give the application some time to start
   
     - name: ZAP Scan
       uses: zaproxy/action-baseline@v0.12.0
