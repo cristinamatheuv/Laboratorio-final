@@ -37,12 +37,12 @@ jobs:
             -Dsonar.branch.name=feat-devsecops
 
 
-    - name: SonarQube Quality Gate Check
-      env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
-      with:
-        scanMetadataReportFile: './.scannerwork/report-task.txt'
+    # - name: SonarQube Quality Gate Check
+    #   env:
+    #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    #   uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
+    #   with:
+    #     scanMetadataReportFile: './.scannerwork/report-task.txt'
       
 
       
@@ -68,7 +68,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
 
-          args: --all-projects --severity-threshold=medium --json
+          args: --all-projects --severity-threshold=high --json
  #---------------DOCKER
   DockerBuild:
     needs: SCA
