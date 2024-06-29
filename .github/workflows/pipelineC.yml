@@ -24,13 +24,19 @@ jobs:
       run: npm install sonar-scanner --save-dev
   
     - name: Run SonarCloud analysis
-      run: |
-        npx sonar-scanner \
-         -Dsonar.projectKey=devsecops7_laboratorio-final
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          with:
+          args: >
+            -Dsonar.projectKey=devsecops7_laboratorio-final
             -Dsonar.organization=devsecops7
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.login=${{ secrets.SONAR_TOKEN }} 
             -Dsonar.branch.name=feat-devsecops
+
+
     - name: SonarQube Quality Gate Check
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
