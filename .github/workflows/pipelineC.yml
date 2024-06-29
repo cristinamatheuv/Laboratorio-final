@@ -166,7 +166,7 @@ jobs:
     
       - name: Start Application
         run: |
-            docker run -d --name netflix-app -p 8080:80 cristinamatheuv/devsecops:latest
+            docker run -p 8085:8085 --name netflix-app cristinamatheuv/devsecops:latest
             sleep 15 # Give the application some time to start
     
       - name: ZAP Scan
